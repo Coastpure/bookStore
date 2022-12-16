@@ -1,0 +1,189 @@
+>npm create vite@latest
+>npm install -D tailwindcss postcss autoprefixer
+>npx tailwindcss init -p
+
+in tailwind.config.js
+content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+
+  in index.css 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+open package.json add,
+ "proxy":;
+ it will be the backend server url
+ "proxy":"http://127.0.0.1:8000",
+
+ go back to backend server
+ open middleware folder, aopen file name TrusrProxies
+
+ add an element what will be the url of the front end app
+
+ protected $proxies = [
+        'http://localhost:5173/'
+    ];
+
+    we are going to install react router dom so that we can add navigation bar and routes in this application
+
+npm i react-router-dom
+
+make anew folder called components
+make List.jsx 
+
+then on App.jsx we wanna make a new navbar 
+then inside <li>, we add a <link>
+
+A <Link> is an element that lets the user navigate to another page by clicking or tapping on it.
+then follow it's documentation
+https://reactrouter.com/en/main/components/link
+
+at the top 
+import { Link } from "react-router-dom";
+
+import { Link, BrowserRouter as Router } from "react-router-dom";
+
+<li>
+  <Link to="/">BookList</Link>
+</li>
+
+
+now we'll set the route for BookList
+
+follow documentation
+https://reactrouter.com/en/main/components/routes
+
+</nav>
+   <Routes location>
+   <Route />
+ </Routes>;
+</div>
+
+now define the route path 
+
+<Route path="/" element={}/>
+
+we need to create a class booklist so open List.jsx
+
+and create booklist class and call fetch api to retrieve all the book records from the backend api server
+
+you can follow on the documentation, search AJAX and APIs
+
+copy the whole code that starts with 
+class MyComponent extends React.Component {
+and paste it in
+
+change classname to Booklist 
+class BookList extends React.Component {
+ and import react from 'react'
+
+ change array name items: []
+ to books: []
+
+fetch("https://api.example.com/items") to 
+fetch("http://127.0.0.1:8000/api/books")
+
+and below isLoaded 
+books: result
+
+change const { error, isLoaded, items } = this.state;   to 
+const { error, isLoaded, books } = this.state;
+
+and
+
+{items.map(item => (
+ <li key={item.id}>
+    
+to
+               
+{books.map(book => (
+ <li key={book.id}>
+
+ and 
+ {item.name} {item.price}    to 
+
+ then on app.jsx add to the elements where we had left empty 
+ <Route path="/" element={<Booklist/>}/>
+
+ export BookList.jsx 
+ export default BookList;
+
+Import routes and route in App.js
+
+import { Link, BrowserRouter as Router ,Routes, Route } from "react-router-dom";
+
+run the app
+
+you should see book title etc
+
+in App List.jsx, replace
+
+ <ul>
+            {books.map(book => (
+              <li key={book.id}>
+                {book.title} {book.author}
+              </li>
+            ))}
+ </ul>
+
+with 
+
+ <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publisher</th>
+              </tr>
+            </thead>
+            <tbody>
+              {books.map(book => (
+                <tr key={book.id}>
+                  <td>{book.id}</td>
+                  <td>{book.title}</td>
+                  <td>{book.author}</td>
+                  <td>{book.publisher}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+
+now we'll create a form so that we can store a new book record into database
+from front end application to backend server
+
+make a new file Createbook.jsx 
+on react documentation search forms 
+https://reactjs.org/docs/forms.html#gatsby-focus-wrapper
+
+copy all code in the box that starts with 
+class EssayForm extends React.Component {
+
+change first line to 
+class EssayForm extends React.Component {
+
+  and export this class
+
+now we'll change the code so that we can hold the form data in this.state
+
+change       
+this.state = {value: 'Please write an essay about your favorite DOM element.'};
+to 
+this.state = {title:'',author:'',publisher:''};
+
+we can hold the form data in title author and publisher field
+
+
+change 
+this.setState({value: event.target.value});
+to 
+this.setState({[ event.target.name] : [event.target.value]});
+
+
+update handleSubmit function
+
+//39:00
